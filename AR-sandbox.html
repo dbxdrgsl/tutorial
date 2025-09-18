@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AR Topographic Sandbox — Tutorial Walkthrough</title>
+  <meta name="description" content="Step‑by‑step guide to build, install, calibrate, and teach with the Augmented Reality Topographic Sandbox (SARndbox)." />
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121933; --ink:#e7eaf6; --muted:#aab3d6; --acc:#7aa2ff; --ok:#43d787; --warn:#ffd166; --err:#ff6b6b;
+      --code:#0d1328; --border:#25305a;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;color:var(--ink);background:radial-gradient(1200px 800px at 10% -10%,#15204a 0%,#0b1020 45%,#0b1020 100%);} 
+    a{color:var(--acc);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px;margin:auto;padding:24px}
+    header{position:sticky;top:0;background:rgba(11,16,32,.75);backdrop-filter:blur(8px);z-index:10;border-bottom:1px solid var(--border)}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#3b82f6, #22c55e);display:grid;place-items:center;font-weight:700}
+    nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:linear-gradient(180deg,#111835,#0c1229)}
+    main{display:grid;grid-template-columns: 300px 1fr;gap:24px;margin-top:18px}
+    @media (max-width: 1000px){main{grid-template-columns:1fr}}
+    .toc{position:sticky;top:74px;align-self:start;border:1px solid var(--border);border-radius:14px;padding:16px;background:linear-gradient(180deg,#101734,#0e152e)}
+    .toc h3{margin:0 0 8px 0;font-size:14px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+    .toc a{display:block;padding:8px 6px;border-radius:8px;color:var(--ink)}
+    .toc a:hover{background:#0f1838}
+    section{border:1px solid var(--border);border-radius:16px;padding:20px;background:linear-gradient(180deg,#11183a,#0f1532)}
+    section h2{margin:0 0 8px 0}
+    .muted{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+    .card{border:1px solid var(--border);border-radius:14px;padding:14px;background:linear-gradient(180deg,#11183a,#0e152e)}
+    .checklist li{list-style:none;margin:8px 0;padding-left:28px;position:relative}
+    .checklist li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:6px;border:1px solid var(--border);background:#0c1229}
+    .checklist li.done::before{background:conic-gradient(from 90deg,#22c55e 0 75%,transparent 75%);border-color:#1c784f}
+    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:var(--code);border:1px solid var(--border);border-radius:10px}
+    code{padding:2px 6px}
+    pre{padding:12px;overflow:auto}
+    .kbd{border:1px solid var(--border);background:#0c1229;border-radius:6px;padding:2px 6px;font:12px ui-monospace,monospace}
+    .badge{border:1px solid var(--border);border-radius:8px;padding:4px 8px;display:inline-block;color:var(--muted)}
+    .note{border-left:4px solid var(--acc);padding:8px 12px;background:#0e1739;border-radius:10px}
+    .warn{border-left-color:var(--warn)}
+    .ok{border-left-color:var(--ok)}
+    footer{margin:40px 0;color:var(--muted);text-align:center}
+    table{width:100%;border-collapse:collapse}
+    th,td{border:1px solid var(--border);padding:8px;text-align:left}
+    th{background:#0f1839}
+    .flex{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{border:1px solid var(--border);background:#0f1532;color:var(--ink);padding:8px 12px;border-radius:10px}
+    .btn:hover{background:#0f1839}
+    .sr{position:absolute;left:-9999px}
+    @media print{header,nav,.toc,.btn{display:none} body{background:#fff;color:#000} section{break-inside:avoid;border-color:#ddd;background:#fff}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden>△</div>
+        <div>
+          <h1 style="margin:0;font-size:20px">AR Topographic Sandbox — Tutorial Walkthrough</h1>
+          <div class="muted" style="font-size:13px">Build • Install • Calibrate • Teach</div>
+        </div>
+      </div>
+      <nav aria-label="Quick links">
+        <a class="pill" href="#overview">Overview</a>
+        <a class="pill" href="#bom">Bill of Materials</a>
+        <a class="pill" href="#build">Build</a>
+        <a class="pill" href="#software">Software</a>
+        <a class="pill" href="#calibration">Calibration</a>
+        <a class="pill" href="#operate">Operate</a>
+        <a class="pill" href="#teach">Lesson ideas</a>
+        <a class="pill" href="#troubleshoot">Troubleshooting</a>
+        <a class="pill" href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <main>
+      <aside class="toc" aria-label="Table of contents">
+        <h3>On this page</h3>
+        <a href="#overview">1. Overview</a>
+        <a href="#bom">2. Bill of Materials</a>
+        <a href="#build">3. Build the rig</a>
+        <a href="#software">4. Install software</a>
+        <a href="#calibration">5. Calibrate</a>
+        <a href="#operate">6. Operate</a>
+        <a href="#teach">7. Lesson ideas</a>
+        <a href="#troubleshoot">8. Troubleshooting</a>
+        <a href="#faq">9. FAQ + Links</a>
+      </aside>
+
+      <article>
+        <section id="overview">
+          <h2>1) Overview</h2>
+          <p>The AR Topographic Sandbox overlays live elevation colors and contour lines on real sand. A depth camera senses the surface. A projector renders the map back on the sand in real time. Optional hand‑height “rain” produces flow simulation.</p>
+          <div class="grid">
+            <div class="card">
+              <div class="badge">Inputs</div>
+              <ul class="checklist">
+                <li>Depth stream from Kinect or RealSense</li>
+                <li>Hand height for “rain” trigger</li>
+                <li>Sand surface geometry</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="badge">Outputs</div>
+              <ul class="checklist">
+                <li>False‑color elevation ramp</li>
+                <li>Contour lines</li>
+                <li>Water flow visualization</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="badge">Software stack</div>
+              <ul class="checklist">
+                <li>Vrui toolkit</li>
+                <li>Kinect 3D Video package</li>
+                <li>SARndbox application</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="bom">
+          <h2>2) Bill of Materials</h2>
+          <div class="grid">
+            <div class="card">
+              <h3>Core hardware</h3>
+              <ul>
+                <li>Projector: 1080p short‑throw preferred</li>
+                <li>Depth camera: Kinect v1 (Xbox 360) or v2 + USB adapter</li>
+                <li>PC: Linux, recent Nvidia GPU recommended</li>
+                <li>Sandbox: wooden box 80–120 cm edge, matte light sand</li>
+                <li>Rigid mount or frame for camera + projector</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Tools & supplies</h3>
+              <ul>
+                <li>Measuring tape, square, drill/driver</li>
+                <li>Tripod arms or ceiling mount</li>
+                <li>Printed checkerboard target (A3/A4)</li>
+                <li>HDMI cable, power strips, USB 3.0 cable</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Optional</h3>
+              <ul>
+                <li>Mirror for periscope setup</li>
+                <li>Blackout shrouds to reduce glare</li>
+                <li>Wheels for mobility</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="build">
+          <h2>3) Build the rig</h2>
+          <ol class="checklist">
+            <li>Build a sand box. Height ≈ 20–30 cm. Interior matte light color to avoid hotspots.</li>
+            <li>Mount the projector centered over the box. Lens axis normal to sand plane if possible.</li>
+            <li>Mount the depth camera near the projector. Fields of view should overlap the full sand area.</li>
+            <li>Stiffen the mount. Flex causes drift.</li>
+            <li>Fill with dry, clean, light sand. Level approximately.</li>
+          </ol>
+          <p class="note">Tip: Start with 90–110 cm throw distance. Adjust to fill the box without keystone.</p>
+        </section>
+
+        <section id="software">
+          <h2>4) Install software</h2>
+          <div class="grid">
+            <div class="card">
+              <h3>Option A — Pop!_OS quick install</h3>
+              <p>Fast path with distro packages.</p>
+              <pre><code>sudo apt update
+sudo apt install arsandbox
+sudo adduser $(whoami) vrui-grp
+reboot</code></pre>
+              <p class="muted">After reboot, plug the Kinect. Verify groups with <span class="kbd">id</span>. Run <span class="kbd">SARndbox</span>.</p>
+            </div>
+            <div class="card">
+              <h3>Option B — Upstream build (any Debian/Ubuntu)</h3>
+              <ol>
+                <li>Install Nvidia drivers and build tools.</li>
+                <li>Build &amp; install <strong>Vrui</strong>.</li>
+                <li>Build &amp; install <strong>Kinect</strong> package.</li>
+                <li>Build &amp; install <strong>SARndbox</strong>.</li>
+              </ol>
+              <pre><code># example dependencies
+sudo apt install build-essential git cmake libusb-1.0-0-dev \
+  libgl1-mesa-dev libglu1-mesa-dev libx11-dev libxrandr-dev \
+  libxi-dev libudev-dev libjpeg-dev libpng-dev
+# fetch sources (replace TAGs as needed)
+# Vrui
+git clone https://github.com/KeckCAVES/Vrui && cd Vrui && make -j && sudo make install
+# Kinect
+git clone https://github.com/KeckCAVES/Kinect && cd Kinect && make -j && sudo make install
+# SARndbox
+git clone https://github.com/KeckCAVES/SARndbox && cd SARndbox && make -j && sudo make install</code></pre>
+              <p class="note">Use tagged releases if your distro is older. Read each repo’s README for exact flags.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="calibration">
+          <h2>5) Calibrate</h2>
+          <div class="grid">
+            <div class="card">
+              <h3>5.1 Align the camera to the sand plane</h3>
+              <ol>
+                <li>Run <code>RawKinectViewer</code>. Place the printed checkerboard flat on the sand.</li>
+                <li>Fit the base plane. Save to <code>etc/SARndbox-*/BoxLayout.txt</code>.</li>
+                <li>Define sandbox extents by touching corners per on‑screen prompts.</li>
+              </ol>
+              <p class="note ok">Goal: Flat sand yields a single color band. No contour wiggles.</p>
+            </div>
+            <div class="card">
+              <h3>5.2 Projector mapping</h3>
+              <ol>
+                <li>Run <code>CalibrateProjector</code>. Show the checkerboard. Capture reference points.</li>
+                <li>Cover the Kinect view briefly to avoid hand “rain” during capture.</li>
+                <li>Save pinpoints. Restart <code>SARndbox</code> and verify overlay alignment.</li>
+              </ol>
+              <p class="note">Accuracy depends on rigidity. If mounts move, recalibrate.</p>
+            </div>
+            <div class="card">
+              <h3>5.3 Tune elevation &amp; rain</h3>
+              <ul>
+                <li>Edit <code>ColorMap.txt</code> to change elevation colors.</li>
+                <li>Adjust <code>WaterParams.cfg</code> for rain threshold and flow.</li>
+                <li>Toggle overlays with keyboard shortcuts shown in terminal.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="operate">
+          <h2>6) Operate</h2>
+          <ul class="checklist">
+            <li>Start <code>SARndbox</code>. Wait for depth stream.</li>
+            <li class="done">Flatten the surface. Confirm uniform color.</li>
+            <li>Shape hills and valleys. Watch contours update.</li>
+            <li>Hold a hand above the sand to make “rain”. Remove to stop.</li>
+            <li>Use keyboard flags to toggle: contours, color ramp, water.</li>
+          </ul>
+          <p class="note">Lighting: dim ambient light. Avoid direct sunlight on sand.</p>
+        </section>
+
+        <section id="teach">
+          <h2>7) Lesson ideas</h2>
+          <div class="grid">
+            <div class="card"><h3>Topography basics</h3><ul><li>Contour spacing vs slope</li><li>Recognize ridge vs valley</li><li>Profiles across a transect</li></ul></div>
+            <div class="card"><h3>Hydrology</h3><ul><li>Watersheds and divides</li><li>Rain‑on‑grid flood demo</li><li>Lakes, spill points, outlets</li></ul></div>
+            <div class="card"><h3>Geomorphology</h3><ul><li>Meanders and deltas</li><li>Dams and reservoirs</li><li>Erosion vs deposition</li></ul></div>
+            <div class="card"><h3>Assessment</h3><ul><li>Sketch a contour map from a shape</li><li>Predict flow paths before raining</li><li>Measure relief in cm and convert to m</li></ul></div>
+          </div>
+        </section>
+
+        <section id="troubleshoot">
+          <h2>8) Troubleshooting</h2>
+          <table>
+            <thead><tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr></thead>
+            <tbody>
+              <tr><td>Contours drift after bumps</td><td>Rig flex or mount shifted</td><td>Tighten hardware; rerun projector calibration</td></tr>
+              <tr><td>Snow or holes in depth</td><td>Reflective sand or bright glare</td><td>Matte light sand; reduce light; raise exposure threshold</td></tr>
+              <tr><td>No rain</td><td>Hand threshold too high; feature off</td><td>Edit <code>WaterParams.cfg</code>; check keyboard toggles</td></tr>
+              <tr><td>Kinect not detected</td><td>Missing udev rules or group</td><td>Add user to <code>vrui-grp</code>; check <code>dmesg</code>; try different USB port</td></tr>
+              <tr><td>Color map inverted</td><td>Base plane sign flipped</td><td>Redo base‑plane fit with checkerboard flat</td></tr>
+            </tbody>
+          </table>
+          <p class="note warn">Keep a print of the checkerboard on hand. It is required for quick re‑calibration.</p>
+        </section>
+
+        <section id="faq">
+          <h2>9) FAQ + Links</h2>
+          <details>
+            <summary>Which cameras work?</summary>
+            <p>Kinect v1 is most reliable. Kinect v2 can work with adapter. Some Intel RealSense models work with older SDK generations.</p>
+          </details>
+          <details>
+            <summary>Minimum PC?</summary>
+            <p>Modern CPU and Nvidia GPU recommended. Integrated GPUs may struggle at high resolutions.</p>
+          </details>
+          <div class="grid" style="margin-top:12px">
+            <div class="card">
+              <h3>Official project pages</h3>
+              <ul>
+                <li><a href="https://web.cs.ucdavis.edu/~okreylos/ResDev/SARndbox/" target="_blank" rel="noopener">UC Davis — AR Sandbox</a></li>
+                <li><a href="https://web.cs.ucdavis.edu/~okreylos/ResDev/SARndbox/SoftwareInstallation.html" target="_blank" rel="noopener">Software installation</a></li>
+                <li><a href="https://web.cs.ucdavis.edu/~okreylos/ResDev/SARndbox/Download.html" target="_blank" rel="noopener">Downloads & forum</a></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Quick‑install (Pop!_OS)</h3>
+              <ul>
+                <li><a href="https://support.system76.com/articles/ar-sandbox/" target="_blank" rel="noopener">System76 AR Sandbox guide</a></li>
+                <li><a href="https://github.com/pop-os/packaging-sarndbox" target="_blank" rel="noopener">Pop!_OS packaging notes</a></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Alternatives</h3>
+              <ul>
+                <li><a href="https://github.com/cgre-aachen/open_AR_Sandbox" target="_blank" rel="noopener">Open AR‑Sandbox (Python)</a></li>
+                <li><a href="https://www.instructables.com/Augmented-Reality-Sandbox/" target="_blank" rel="noopener">Instructables walkthrough</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <footer>
+          <p>Made for educators. Single‑file. Copy and host anywhere.</p>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    // Smooth scroll + highlight active section
+    const tocLinks=[...document.querySelectorAll('.toc a')];
+    const sections=tocLinks.map(a=>document.querySelector(a.getAttribute('href')));
+    const obs=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        const idx=sections.indexOf(e.target);
+        if(idx>=0){
+          const l=tocLinks[idx];
+          if(e.isIntersecting){ l.style.background='#0b1340'; l.style.fontWeight='600'; }
+          else { l.style.background=''; l.style.fontWeight=''; }
+        }
+      })
+    },{rootMargin:'-40% 0px -50% 0px',threshold:0.01});
+    sections.forEach(s=>obs.observe(s));
+  </script>
+</body>
+</html>
